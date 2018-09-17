@@ -12,10 +12,10 @@ namespace SimpleBot
     public class SimpleBotUser
     {
 
-        IRepositoryMDB repository;
-        IRepository repositoryEF;
+        static IRepositoryMDB repository;
+        static IRepository repositoryEF;
 
-        public SimpleBotUser()
+        static SimpleBotUser()
         {
             repository = new Repository.MDB.RepositoryMDB();
             repositoryEF = new Repository.EF.RepositoryEF();
@@ -24,55 +24,24 @@ namespace SimpleBot
         //int visitas = 0;
         public static string Reply(Message message)
         {
-            var simpleBotUser = new SimpleBotUser();
-            var id = message.Id;
-            UserProfile profile = simpleBotUser.GetProfile(id);
-            profile.Id = id;
-            profile.Visitas++;
-
-            simpleBotUser.SetProfile(profile);
-
-            return $"{message.User} disse '{message.Text}' e mandou {profile.Visitas} mensagens.";
-        }
-
-        public UserProfile GetProfile(string id)
-        {
             try
             {
+                var id = message.Id;
+                var profile = repositoryEF.GetProfile(id);
+                profile._id = id;
+                profile.Visitas++;
 
-                var user = repository.GetProfile(id);
+                repositoryEF.SetProfile(profile, id);
 
-                return new UserProfile()
-                {
-                    Id = user._id,
-                    Visitas = user.Visitas
-                };
+                return $"{message.User} disse '{message.Text}' e mandou {profile.Visitas} mensagens.";
             }
             catch (Exception ex)
             {
+
                 throw ex;
             }
             
         }
         
-        public void SetProfile(UserProfile profile)
-        {
-
-            try
-            {
-                var user = new MDB.Entities.UserProfile();
-                user._id = profile.Id.ToString();
-                user.Visitas = profile.Visitas;
-
-                repository.SetProfile(user, "");
-
-            }
-            catch (Exception ex)
-            {
-
-                throw ex;
-            }
-            
-        }
     }
 }

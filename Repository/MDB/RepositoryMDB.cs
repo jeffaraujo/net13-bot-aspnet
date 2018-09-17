@@ -36,7 +36,7 @@ namespace SimpleBot.Repository.MDB
                 SimpleBot.MDB.Entities.UserProfile userProfile;
 
                 if (res != null)
-                    userProfile = BsonSerializer.Deserialize<SimpleBot.MDB.Entities.UserProfile>(res);
+                    userProfile = BsonSerializer.Deserialize<SimpleBot.MDB.Entities.UserProfile>(res); //Converte de Bson para objeto (classe)
                 else
                     userProfile = new SimpleBot.MDB.Entities.UserProfile() { _id = _id, Visitas = 0 };
 

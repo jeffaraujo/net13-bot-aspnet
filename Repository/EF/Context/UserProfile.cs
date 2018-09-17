@@ -9,8 +9,10 @@ namespace SimpleBot.Repository.EF.Context
     [Table("UserProfile")]
     public partial class UserProfile
     {
+        [Key]
+        [Column("_id")]
         [StringLength(50)]
-        public string Id { get; set; }
+        public string _id { get; set; }
 
         public int Visitas { get; set; }
     }

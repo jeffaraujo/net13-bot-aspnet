@@ -17,7 +17,7 @@ namespace SimpleBot.Repository.EF.Context
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             modelBuilder.Entity<UserProfile>()
-                .Property(e => e.Id)
+                .Property(e => e._id)
                 .IsUnicode(false);
         }
     }

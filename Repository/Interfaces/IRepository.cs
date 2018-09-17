@@ -9,9 +9,9 @@ namespace SimpleBot.Repository.Interfaces
 {
     public interface IRepository
     {
-        UserProfile GetProfile(string _id);
+        SimpleBot.Repository.EF.Context.UserProfile GetProfile(string _id);
 
-        void SetProfile(UserProfile userProfile, string _id);
+        void SetProfile(SimpleBot.Repository.EF.Context.UserProfile userProfile, string _id);
         
     }
 }

@@ -16,22 +16,45 @@ namespace SimpleBot.Repository.EF
             ctx = new Context13NET();
         }
 
-        public UserProfile GetProfile(string _id)
+        public SimpleBot.Repository.EF.Context.UserProfile GetProfile(string _id)
         {
-            return ctx.Set<UserProfile>().Find(new object[] { _id });
+            try
+            {
+                Context.UserProfile user = ctx.UserProfile.FirstOrDefault(u => u._id == _id);
+
+                if (user == null)
+                    user = new Context.UserProfile() { Visitas = 0, _id = _id };
+
+                return user;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
         }
 
-        public void SetProfile(UserProfile userProfile, string _id)
+        public void SetProfile(SimpleBot.Repository.EF.Context.UserProfile userProfile, string _id)
         {
-            var up = GetProfile(_id);
-            if (up != null)
+
+            try
             {
-                ctx.Entry(userProfile).State = System.Data.Entity.EntityState.Modified;
-            }else
-            {
-                ctx.Set<UserProfile>().Add(userProfile);
+                var user = ctx.UserProfile.FirstOrDefault(u => u._id == userProfile._id);
+                if (user != null)
+                {
+                    ctx.Entry(userProfile).State = System.Data.Entity.EntityState.Modified;
+                }
+                else
+                {
+                    ctx.Set<SimpleBot.Repository.EF.Context.UserProfile>().Add(userProfile);
+                }
+                ctx.SaveChanges();
             }
-            ctx.SaveChanges();
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
         }
 
         public void Dispose()
