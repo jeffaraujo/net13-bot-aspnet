@@ -5,61 +5,74 @@ using System.Web;
 using MongoDB;
 using MongoDB.Bson;
 using MongoDB.Driver;
-
+using SimpleBot.Repository.Interfaces;
 
 namespace SimpleBot
 {
     public class SimpleBotUser
     {
 
+        IRepositoryMDB repository;
+        IRepository repositoryEF;
+
+        public SimpleBotUser()
+        {
+            repository = new Repository.MDB.RepositoryMDB();
+            repositoryEF = new Repository.EF.RepositoryEF();
+        }
+
         //int visitas = 0;
         public static string Reply(Message message)
         {
+            var simpleBotUser = new SimpleBotUser();
             var id = message.Id;
-            var profile = GetProfile(id);
+            UserProfile profile = simpleBotUser.GetProfile(id);
+            profile.Id = id;
             profile.Visitas++;
 
-            SetProfile(profile);
+            simpleBotUser.SetProfile(profile);
 
             return $"{message.User} disse '{message.Text}' e mandou {profile.Visitas} mensagens.";
         }
 
-        public static UserProfile GetProfile(string id)
+        public UserProfile GetProfile(string id)
         {
-
-            string connectionString = "mongodb://localhost:27017";
-
-            MongoClient client = new MongoClient(connectionString);
-
-            IMongoDatabase db = client.GetDatabase("13net"); //Cria o DataBase
-
-            var col = db.GetCollection<BsonDocument>("UserProfile");
-            var filtro = Builders<BsonDocument>.Filter.Eq("id", id);
-            var res = col.Find(filtro).FirstOrDefault();
-            
-
-            return res;
-        }
-
-
-
-        public static void SetProfile(UserProfile profile)
-        {
-            string connectionString = "mongodb://localhost:27017";
-
-            MongoClient client = new MongoClient(connectionString);
-
-            IMongoDatabase db = client.GetDatabase("13net"); //Cria o DataBase
-            var doc = new BsonDocument
+            try
             {
-                { "id", profile.Id },
-                { "Visitas", profile.Visitas }
-            };
 
-            var col = db.GetCollection<BsonDocument>("UserProfile");
-            col.InsertOne(doc);
+                var user = repository.GetProfile(id);
 
+                return new UserProfile()
+                {
+                    Id = user._id,
+                    Visitas = user.Visitas
+                };
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            
+        }
+        
+        public void SetProfile(UserProfile profile)
+        {
 
+            try
+            {
+                var user = new MDB.Entities.UserProfile();
+                user._id = profile.Id.ToString();
+                user.Visitas = profile.Visitas;
+
+                repository.SetProfile(user, "");
+
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+            
         }
     }
 }
