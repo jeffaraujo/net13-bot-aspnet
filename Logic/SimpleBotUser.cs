@@ -12,13 +12,14 @@ namespace SimpleBot
     public class SimpleBotUser
     {
 
-        static IRepositoryMDB repository;
-        static IRepository repositoryEF;
-
+        //static IRepositoryMDB repository;
+        //static IRepository repositoryEF;
+        static IRepositoryODBC repositoryODBC;
         static SimpleBotUser()
         {
-            repository = new Repository.MDB.RepositoryMDB();
-            repositoryEF = new Repository.EF.RepositoryEF();
+            //repository = new Repository.MDB.RepositoryMDB();
+            //repositoryEF = new Repository.EF.RepositoryEF();
+            repositoryODBC = new Repository.ODBC.RepositoryODBC();
         }
 
         //int visitas = 0;
@@ -27,11 +28,11 @@ namespace SimpleBot
             try
             {
                 var id = message.Id;
-                var profile = repositoryEF.GetProfile(id);
+                var profile = repositoryODBC.GetProfile(id);
                 profile._id = id;
                 profile.Visitas++;
 
-                repositoryEF.SetProfile(profile, id);
+                repositoryODBC.SetProfile(profile, id);
 
                 return $"{message.User} disse '{message.Text}' e mandou {profile.Visitas} mensagens.";
             }
