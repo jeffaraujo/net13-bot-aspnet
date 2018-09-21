@@ -7,7 +7,7 @@ using SimpleBot.Repository.Interfaces;
 
 namespace SimpleBot.Repository.MDB
 {
-    public class RepositoryMDB : IRepositoryMDB
+    public class RepositoryMDB : IRepository
     {
         const string connectionString = "mongodb://localhost:27017";
         const string databasename = "DB13NET";
@@ -20,7 +20,7 @@ namespace SimpleBot.Repository.MDB
             db = client.GetServer().GetDatabase(databasename); //Cria o DataBase
         }
 
-        public SimpleBot.MDB.Entities.UserProfile GetProfile(string _id)
+        public Model.UserProfile GetProfile(string _id)
         {
             try
             {
@@ -33,25 +33,24 @@ namespace SimpleBot.Repository.MDB
                 QueryDocument query = new QueryDocument(where);
                 var res = col.FindOne(query);
 
-                SimpleBot.MDB.Entities.UserProfile userProfile;
+                Model.UserProfile userProfile;
 
                 if (res != null)
-                    userProfile = BsonSerializer.Deserialize<SimpleBot.MDB.Entities.UserProfile>(res); //Converte de Bson para objeto (classe)
+                    userProfile = BsonSerializer.Deserialize<Model.UserProfile>(res); //Converte de Bson para objeto (classe)
                 else
-                    userProfile = new SimpleBot.MDB.Entities.UserProfile() { _id = _id, Visitas = 0 };
+                    userProfile = new Model.UserProfile() { _id = _id, Visitas = 0 };
 
                 return userProfile;
             }
             catch (System.Exception ex)
             {
-
                 throw ex;
             }
 
 
         }
 
-        public void SetProfile(SimpleBot.MDB.Entities.UserProfile profile, string _id)
+        public void SetProfile(Model.UserProfile profile, string _id)
         {
 
             try
@@ -64,11 +63,9 @@ namespace SimpleBot.Repository.MDB
 
                 var col = db.GetCollection<BsonDocument>("UserProfile");
                 col.Save(doc);
-
             }
             catch (System.Exception ex)
             {
-
                 throw ex;
             }
 

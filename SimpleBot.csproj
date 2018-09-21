@@ -179,11 +179,8 @@
     <Compile Include="Repository\EF\Context\UserProfile.cs" />
     <Compile Include="Repository\Interfaces\IRepository.cs" />
     <Compile Include="Repository\EF\RepositoryEF.cs" />
-    <Compile Include="Repository\Interfaces\IRepositoryMDB.cs" />
-    <Compile Include="Repository\Interfaces\IRepositoryODBC.cs" />
-    <Compile Include="Repository\MDB\Entities\UserProfile.cs" />
     <Compile Include="Repository\MDB\RepositoryMDB.cs" />
-    <Compile Include="Repository\ODBC\Entities\UserProfile.cs" />
+    <Compile Include="Repository\Model\UserProfile.cs" />
     <Compile Include="Repository\ODBC\RepositoryODBC.cs" />
   </ItemGroup>
   <ItemGroup>
