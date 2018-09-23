@@ -7,6 +7,7 @@ using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 namespace SimpleBot.Repository.Model
 {
+    // Nome não ficou bom - o ideal seria fazer mencao ao MongoDB (pelas dependencias)
     public class UserProfile
     {
         [BsonRequired()]
