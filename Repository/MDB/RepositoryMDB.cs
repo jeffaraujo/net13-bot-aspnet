@@ -9,13 +9,15 @@ namespace SimpleBot.Repository.MDB
 {
     public class RepositoryMDB : IRepository
     {
-        const string connectionString = "mongodb://localhost:27017";
+        readonly string connectionString;
         const string databasename = "DB13NET";
         MongoClient client;
         MongoDatabase db;
 
-        public RepositoryMDB()
+        // procure passar a connection string por parametro
+        public RepositoryMDB(string connectionString = "mongodb://localhost:27017")
         {
+            this.connectionString = connectionString;
             client = new MongoClient(connectionString);
             db = client.GetServer().GetDatabase(databasename); //Cria o DataBase
         }
