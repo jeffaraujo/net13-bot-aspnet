@@ -16,9 +16,10 @@ namespace SimpleBot.Repository.EF
             ctx = new Context13NET();
         }
 
+        // exemplo: reescrevendo GetProfile
         public Model.UserProfile GetProfile(string _id)
         {
-            try
+            using(ctx = new Context13NET())
             {
                 var user = ctx.UserProfile.FirstOrDefault(u => u._id == _id);
                 Model.UserProfile userModel;
@@ -27,13 +28,8 @@ namespace SimpleBot.Repository.EF
                 else
                     userModel = new Model.UserProfile() { Visitas = user.Visitas, _id = user._id };
                 
-                return userModel;
+                return userModel;            
             }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
-
         }
 
         public void SetProfile(Model.UserProfile userProfile, string _id)
@@ -61,6 +57,8 @@ namespace SimpleBot.Repository.EF
             }
         }
 
+        // Se possivel, reescreva o codigo para evitar o Dispose
+        // Por exemplo, podemos remover a propriedade ctx da classe e incluir no metodo
         public void Dispose()
         {
             if (ctx != null)

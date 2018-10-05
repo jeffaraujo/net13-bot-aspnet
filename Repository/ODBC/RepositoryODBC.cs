@@ -22,6 +22,7 @@ namespace SimpleBot.Repository.ODBC
 
         public Model.UserProfile GetProfile(string _id)
         {
+            // Que legal!!!
             var excel = new ExcelQueryFactory(filePath);
             excel.AddMapping<Model.UserProfile>(x => x._id, "_id");
             excel.AddMapping<Model.UserProfile>(x => x.Visitas, "Visitas");
@@ -65,6 +66,7 @@ namespace SimpleBot.Repository.ODBC
                     }
                 }
             }
+            // evite try-catch
             catch (Exception ex)
             {
                 throw ex;
